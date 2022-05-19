@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 class Post(models.Model):
     STATUS_CHOICES = (
@@ -12,12 +13,23 @@ class Post(models.Model):
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=10)
+    slug = models.SlugField(max_length=250, blank=False, editable=False)
+
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('post_detail', args=[str(self.id)])
+        kwargs = {
+            'slug' : self.slug,
+            'pk' : self.id,
+        }
+        return reverse('post_detail', kwargs=kwargs)
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = slugify(value, allow_unicode = True)
+        super().save(*args, **kwargs)
     
 
     

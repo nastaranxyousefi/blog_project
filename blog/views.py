@@ -33,10 +33,12 @@ class PostListView(generic.ListView):
 #     return render(request, 'blog/post_detail.html', context)
 
 
-class PostDetailView(generic.DeleteView):
+class PostDetailView(generic.DetailView):
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
+    slug_field = 'slug'
+
 
     
 
@@ -57,6 +59,7 @@ class PostDetailView(generic.DeleteView):
 #     return render(request, 'blog/post_create.html', context)
 
 class PostCreateView(generic.CreateView):
+    model = Post
     form_class = PostForm
     template_name = 'blog/post_create.html'
 
@@ -81,8 +84,8 @@ class PostCreateView(generic.CreateView):
 
 class PostUpdateView(generic.UpdateView):
     form_class = PostForm
-    template_name = 'blog/post_create.html'
     model = Post
+    template_name = 'blog/post_create.html'
 
 
 
