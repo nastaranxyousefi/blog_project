@@ -63,6 +63,8 @@ class PostCreateView(generic.CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_create.html'
+   
+
 
 
 
@@ -87,6 +89,8 @@ class PostUpdateView(generic.UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'blog/post_create.html'
+    slug_field = 'slug'
+
 
 
 
@@ -107,4 +111,6 @@ class PostDeleteView(generic.DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('post_list')
+    slug_field = 'slug'
+
 

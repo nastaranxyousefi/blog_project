@@ -13,15 +13,15 @@ Post Detail
         <p class="small text-muted mt-2">
           By: {{post.author.first_name}} {{post.author.last_name}}
         </p>
-        <p class="mt-2">{{post.text}}</p>
+        <p class="mt-2">{{post.text|linebreaks}}</p>
         <div>
           <a
-            href="{% url 'post_update' post.id %}"
+            href="{{ post.get_absolute_update_url }}"
             class="btn btn-sm btn-secondary"
             >Edit</a
           >
           <a
-            href="{% url 'post_delete' post.id %}"
+            href="{{ post.get_absolute_delete_url }}"
             class="btn btn-sm btn-danger"
             >Delete</a
           >

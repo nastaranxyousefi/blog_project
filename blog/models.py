@@ -25,6 +25,20 @@ class Post(models.Model):
             'pk' : self.id,
         }
         return reverse('post_detail', kwargs=kwargs)
+        
+    def get_absolute_update_url(self):
+        kwargs = {
+            'slug' : self.slug,
+            'pk' : self.id,
+        }
+        return reverse('post_update', kwargs=kwargs)
+
+    def get_absolute_delete_url(self):
+        kwargs = {
+            'slug' : self.slug,
+            'pk' : self.id,
+        }
+        return reverse('post_delete', kwargs=kwargs)
 
     def save(self, *args, **kwargs):
         value = self.title
