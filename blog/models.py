@@ -14,6 +14,7 @@ class Post(models.Model):
     datetime_modified = models.DateTimeField(auto_now=True)
     status = models.CharField(choices=STATUS_CHOICES, max_length=10)
     slug = models.SlugField(max_length=250, blank=False, editable=False)
+    cover = models.ImageField(upload_to='post_cover/', blank=True)
 
 
     def __str__(self):
