@@ -12,14 +12,14 @@
         <div class="col-9">
             <div class="card shadow my-3 p-5">
                 <h3>Add new Post:</h3>
-                <form action="" method="POST">
+                <form enctype="multipart/form-data" action="" method="POST">
                     {% csrf_token %}
                     <table>
 
                         {{form|crispy}}
                         
                     </table>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary mt-5">Submit</button>
                 </form>
             </div>
         </div>
