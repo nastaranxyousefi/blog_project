@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
@@ -59,7 +60,7 @@ class PostDetailView(generic.DetailView):
     
 #     return render(request, 'blog/post_create.html', context)
 
-class PostCreateView(generic.CreateView):
+class PostCreateView(LoginRequiredMixin, generic.CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_create.html'
@@ -85,7 +86,7 @@ class PostCreateView(generic.CreateView):
     
 #     return render(request, 'blog/post_create.html', context)
 
-class PostUpdateView(generic.UpdateView):
+class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'blog/post_create.html'
@@ -107,7 +108,7 @@ class PostUpdateView(generic.UpdateView):
 #     return render(request, 'blog/post_delete.html', context)
 
 
-class PostDeleteView(generic.DeleteView):
+class PostDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('post_list')
