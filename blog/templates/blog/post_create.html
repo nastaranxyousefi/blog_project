@@ -1,5 +1,7 @@
 {% extends '_base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block title %}
    {{title}}
 {% endblock title %}
@@ -14,7 +16,7 @@
                     {% csrf_token %}
                     <table>
 
-                        {{form.as_table}}
+                        {{form|crispy}}
                         
                     </table>
                     <button type="submit" class="btn btn-primary">Submit</button>
