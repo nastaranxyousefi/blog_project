@@ -31,7 +31,7 @@
         <div class="mx-2 text-white">
             {% if user.is_authenticated %}
                <p>Welcome {{user.username}}!</p>
-                <p><a class="text-light" href="{% url 'logout' %}">Log out</a></p>
+                <p><a class="text-light text-decoration-none" href="{% url 'logout' %}">Log out</a></p>
 
             {% else %}
                 <a class="text-light text-decoration-none" href="{% url 'login' %}">Log in</a> | <a class="text-light text-decoration-none" href="{% url 'signup' %}">Sign up</a>
