@@ -37,11 +37,17 @@ Post Detail
 
       <div class="card shadow my-3 p-5">
         <h3>Comments:</h3>
-        No comments yet! Be the first one.
+          {% for comment in comments %}
+                <div class="border-bottom mb-3">
+                        <h5 class="mb-3">{{comment.user.username}}</h5>
+                        <p>{{ comment.text|linebreaks }}</p>
+                </div>
+          {% endfor %}
       </div>
 
       <div class="card shadow my-3 p-5">
         <h3>Add new comment:</h3>
+
         <form method="POST">
           <div class="form-group py-2">
             <label class="py-1" for="author_name">Enter your name:</label>

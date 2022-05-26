@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm
 
 
@@ -35,12 +35,21 @@ class PostListView(generic.ListView):
 #     return render(request, 'blog/post_detail.html', context)
 
 
-class PostDetailView(generic.DetailView):
-    model = Post
-    template_name = 'blog/post_detail.html'
-    context_object_name = 'post'
-    slug_field = 'slug'
+# class PostDetailView(generic.DetailView):
+#     model = Post
+#     template_name = 'blog/post_detail.html'
+#     context_object_name = 'post'
+#     slug_field = 'slug'
 
+
+def post_detail_view(request, slug, pk):
+    post = get_object_or_404(Post, slug=slug, pk=pk)
+    post_comments = post.comments.all()
+    context = {
+        'post' : post,
+        'comments' : post_comments,
+    }
+    return render(request, 'blog/post_detail.html', context)
 
     
 
