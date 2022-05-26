@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
 from .models import Post, Comment
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 
 
@@ -45,9 +45,23 @@ class PostListView(generic.ListView):
 def post_detail_view(request, slug, pk):
     post = get_object_or_404(Post, slug=slug, pk=pk)
     post_comments = post.comments.all()
+
+    comment_form = CommentForm()
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            new_comment = comment_form.save(commit=False)
+            new_comment.post = post
+            new_comment.user = request.user
+            new_comment.save()
+            comment_form = CommentForm()
+        return redirect('post_detail', slug=slug, pk=pk)
+
+
     context = {
         'post' : post,
         'comments' : post_comments,
+        'comment_form' : comment_form,
     }
     return render(request, 'blog/post_detail.html', context)
 
@@ -95,12 +109,15 @@ class PostCreateView(LoginRequiredMixin, generic.CreateView):
     
 #     return render(request, 'blog/post_create.html', context)
 
-class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
+class PostUpdateView(LoginRequiredMixin,UserPassesTestMixin, generic.UpdateView):
     form_class = PostForm
     model = Post
     template_name = 'blog/post_create.html'
     slug_field = 'slug'
 
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
 
 
 
@@ -117,10 +134,12 @@ class PostUpdateView(LoginRequiredMixin, generic.UpdateView):
 #     return render(request, 'blog/post_delete.html', context)
 
 
-class PostDeleteView(LoginRequiredMixin, generic.DeleteView):
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
     model = Post
     template_name = 'blog/post_delete.html'
     success_url = reverse_lazy('post_list')
     slug_field = 'slug'
 
-
+    def test_func(self):
+        obj = self.get_object()
+        return obj.author == self.request.user
